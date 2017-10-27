@@ -7,7 +7,6 @@ package com.example.joela.myapplication;
         import android.app.Activity;
         import android.content.Context;
         import android.util.Log;
-        import android.view.Menu;
 
 public class MainActivity extends Activity implements LocationListener {
 
@@ -15,9 +14,18 @@ public class MainActivity extends Activity implements LocationListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        try {
+            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+            Location mylocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            onLocationChanged(mylocation);
+        }
+        catch (SecurityException e) {
 
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+
+
+        }
+
     }
 
 
@@ -27,8 +35,8 @@ public class MainActivity extends Activity implements LocationListener {
     public void onLocationChanged(Location location) {
         // TODO Auto-generated method stub
 
-       double latitude = (double) (location.getLatitude());
-       double longitude = (double) (location.getLongitude());
+       double latitude = location.getLatitude();
+       double longitude = location.getLongitude();
 
         Log.i("Geo_Location", "Latitude: " + latitude + ", Longitude: " + longitude);
     }
